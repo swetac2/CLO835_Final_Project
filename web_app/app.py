@@ -9,9 +9,9 @@ import boto3
 app = Flask(__name__)
 
 s3 = boto3.client('s3',
-                    aws_access_key_id=,
-                    aws_secret_access_key=,
-                    aws_session_token=
+                    aws_access_key_id=ASIA5JZKI6GLCJJ5TCGK,
+                    aws_secret_access_key=4LHtPjiA55/hf48j8wgQD7JlbThwWkGlp1XTrNu+,
+                    aws_session_token=FwoGZXIvYXdzEAQaDGiaV22urVkBZ3OLxyK9AbOXj/yQ4YnqCa3FUKcKGqQyMpPaN1acOCE5KFd4LZa4zDxGmDhccGjVIhsr9HodYNS+KCOFhrtbPp65d1S1cCf4kGi3v/xpYscRvEhdRlJwE3lj3ZjDpXsOA1TEUzoESMxO9qNa4WYOBaJnqyrEzRuoaafEGk3jILjNN4kxpKsgBJ1qdc5mulO8W9VYVQM0HZ74/0PrBugojrCP4D8yOs5nEm3X5HzOZN5538M5bkjhqab/GK0w/KTCODm+2Cijkr6cBjIteeqRA7iGOIK7y5yULaXkSdTmsTi7XpIx/wyQKdOrMR0bEvoa9W1tcezYcD7M
                      )
 
 DBHOST = os.environ.get("DBHOST") or "localhost"
