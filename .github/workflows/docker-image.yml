@@ -31,7 +31,7 @@ jobs:
         ECR_REPOSITORY: webapp
         IMAGE_TAG: v0.1
       run: |
-        cd webapp/
+        cd web_app/
         ls -ltra
         # Docker build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -45,7 +45,7 @@ jobs:
         ECR_REPOSITORY: mysql
         IMAGE_TAG: v0.1
       run: |
-        cd mysql/
+        cd sql/
         ls -ltra
         # Docker build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
