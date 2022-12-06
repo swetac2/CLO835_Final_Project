@@ -4,16 +4,23 @@ import os
 import random
 import argparse
 
+import boto3
 
 app = Flask(__name__)
+
+s3 = boto3.client('s3',
+                    aws_access_key_id=,
+                    aws_secret_access_key=,
+                    aws_session_token=
+                     )
 
 DBHOST = os.environ.get("DBHOST") or "localhost"
 DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "password"
 DATABASE = os.environ.get("DATABASE") or "employees"
-COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
 DBPORT = int(os.environ.get("DBPORT"))
 
+COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
     host= DBHOST,
