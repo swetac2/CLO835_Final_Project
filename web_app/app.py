@@ -35,10 +35,10 @@ table = 'employee';
 
 # Define the supported color codes
 bg_codes = {
-    "set1": "",
-    "set2": "",
-    "set3": "",
-    "set4": "",
+    "set1": "https://background-storage.s3.amazonaws.com/download.jfif",
+    "set2": "https://background-storage.s3.amazonaws.com/images+(1).jfif",
+    "set3": "https://background-storage.s3.amazonaws.com/images+(2).jfif",
+    "set4": "https://background-storage.s3.amazonaws.com/images.jfif",
 
 }
 
