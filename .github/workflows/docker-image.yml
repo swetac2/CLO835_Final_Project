@@ -33,7 +33,7 @@ jobs:
       run: |
         cd web_app/
         ls -ltra
-        # Docker build
+        # Docker build1
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker ps
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
