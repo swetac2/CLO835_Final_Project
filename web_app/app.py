@@ -18,7 +18,7 @@ AWS_ACCESS_KEY=os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY=os.environ.get("AWS_SECRET_KEY")
 AWS_SESSION_TOKEN=os.environ.get("AWS_SESSION_TOKEN")
 
-background_ENV = os.environ.get('APP_bg') or "set1"
+background_ENV = os.environ.get("APP_bg") or "set1"
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
     host= DBHOST,
@@ -26,12 +26,11 @@ db_conn = connections.Connection(
     user= DBUSER,
     password= DBPWD, 
     db= DATABASE
-    
 )
 
 s3 = boto3.client('s3',
 aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key= AWS_SECRET_KEY ,aws_session_token= AWS_SESSION_TOKEN ,region_name="us-east-1")
-)
+
 output = {}
 table = 'employee';
 
