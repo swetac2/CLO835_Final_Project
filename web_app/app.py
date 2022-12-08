@@ -8,18 +8,15 @@ import boto3
 
 app = Flask(__name__)
 
-s3 = boto3.client('s3',
-                    aws_access_key_id = os.environ.get('AWS_ACCESS_KEY'),
-                   aws_secret_access_key= os.environ.get('AWS_SECRET_KEY'),
-                  aws_session_token= os.environ.get('AWS_SESSION_TOKEN'),
-                   region_name="us-east-1")
-                   )
-
 DBHOST = os.environ.get("DBHOST") or "localhost"
 DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "password"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT"))
+
+AWS_ACCESS_KEY=os.environ.get("AWS_ACCESS_KEY")
+AWS_SECRET_KEY=os.environ.get("AWS_SECRET_KEY")
+AWS_SESSION_TOKEN=os.environ.get("AWS_SESSION_TOKEN")
 
 background_ENV = os.environ.get('APP_bg') or "set1"
 # Create a connection to the MySQL database
@@ -30,6 +27,10 @@ db_conn = connections.Connection(
     password= DBPWD, 
     db= DATABASE
     
+)
+
+s3 = boto3.client('s3',
+aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key= AWS_SECRET_KEY ,aws_session_token= AWS_SESSION_TOKEN ,region_name="us-east-1")
 )
 output = {}
 table = 'employee';
