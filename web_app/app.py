@@ -8,19 +8,17 @@ import boto3
 
 app = Flask(__name__)
 
-s3 = boto3.client('s3',
-                    aws_access_key_id=ASIA5JZKI6GLCJJ5TCGK,
-                    aws_secret_access_key=4LHtPjiA55/hf48j8wgQD7JlbThwWkGlp1XTrNu+,
-                    aws_session_token=FwoGZXIvYXdzEAQaDGiaV22urVkBZ3OLxyK9AbOXj/yQ4YnqCa3FUKcKGqQyMpPaN1acOCE5KFd4LZa4zDxGmDhccGjVIhsr9HodYNS+KCOFhrtbPp65d1S1cCf4kGi3v/xpYscRvEhdRlJwE3lj3ZjDpXsOA1TEUzoESMxO9qNa4WYOBaJnqyrEzRuoaafEGk3jILjNN4kxpKsgBJ1qdc5mulO8W9VYVQM0HZ74/0PrBugojrCP4D8yOs5nEm3X5HzOZN5538M5bkjhqab/GK0w/KTCODm+2Cijkr6cBjIteeqRA7iGOIK7y5yULaXkSdTmsTi7XpIx/wyQKdOrMR0bEvoa9W1tcezYcD7M
-                     )
-
 DBHOST = os.environ.get("DBHOST") or "localhost"
 DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "password"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT"))
+BACK_ENV = os.environ.get("APP_bg") or "set1"
+AWS_ACCESS_KEY=os.environ.get("AWS_ACCESS_KEY")
+AWS_SECRET_KEY=os.environ.get("AWS_SECRET_KEY")
+AWS_SESSION_TOKEN=os.environ.get("AWS_SESSION_TOKEN")
 
-background_ENV = os.environ.get('APP_bg') or "set1"
+
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
     host= DBHOST,
@@ -28,14 +26,17 @@ db_conn = connections.Connection(
     user= DBUSER,
     password= DBPWD, 
     db= DATABASE
-    
 )
+
+s3 = boto3.client('s3',
+aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key= AWS_SECRET_KEY ,aws_session_token= AWS_SESSION_TOKEN ,region_name="us-east-1")
+
 output = {}
 table = 'employee';
 
 # Define the supported color codes
 bg_codes = {
-    "set1": "https://background-storage.s3.amazonaws.com/download.jfif",
+    "set1": "https://background-storage.s3.amazonaws.com/pexels-photo-6037011.jpeg",
     "set2": "https://background-storage.s3.amazonaws.com/images+(1).jfif",
     "set3": "https://background-storage.s3.amazonaws.com/images+(2).jfif",
     "set4": "https://background-storage.s3.amazonaws.com/images.jfif",
@@ -51,11 +52,11 @@ bg = random.choice(["set1", "set2", "set3", "set4"])
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', bg=bg_codes[bg])
+    return render_template('addemp.html', background=bg_codes[bg])
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', bg=bg_codes[bg])
+    return render_template('about.html', background=bg_codes[bg])
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -79,11 +80,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, bg=bg_codes[bg])
+    return render_template('addempoutput.html', name=emp_name, background=bg_codes[bg])
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", bg=bg_codes[bg])
+    return render_template("getemp.html", background=bg_codes[bg])
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -112,7 +113,7 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], bg=bg_codes[bg])
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], background=bg_codes[bg])
 
 if __name__ == '__main__':
     
@@ -124,17 +125,17 @@ if __name__ == '__main__':
     if args.bg:
         print("bg from command line argument =" + args.bg)
         bg = args.bg
-        if background_ENV:
-            print("A bg was set through environment variable -" + background_ENV + ". However, bg from command line argument takes precendence.")
-    elif background_ENV:
-        print("No Command line argument. bg from environment variable =" + background_ENV)
-        bg = background_ENV
+        if BACK_ENV:
+            print("A bg was set through environment variable -" + BACK_ENV + ". However, bg from command line argument takes precendence.")
+    elif BACK_ENV:
+        print("No Command line argument. bg from environment variable =" + BACK_ENV)
+        bg = BACK_ENV
     else:
         print("No command line argument or environment variable. Picking a Random bg =" + bg)
 
     # Check if input color is a supported one
     if bg not in bg_codes:
-        print("bg not supported. Received '" + bg + "' expected one of " + background_COLORS)
+        print("bg not supported. Received '" + bg + "' expected one of " + SUPPORTED_BG)
         exit(1)
 
     app.run(host='0.0.0.0',port=81,debug=True)
