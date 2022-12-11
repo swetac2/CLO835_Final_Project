@@ -2,7 +2,7 @@ name: Deploy to ECR
 
 on: 
   push:
-    branches: [ staging ]
+    branches: [ master ]
 
 jobs:
   
@@ -28,26 +28,25 @@ jobs:
     - name: Building the web app and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: webapp
-        IMAGE_TAG: v0.7
+        ECR_REPOSITORY: my_app
+        IMAGE_TAG: v2.1.19
       run: |
-        cd web_app/
+        cd webapp/
         ls -ltra
-        # Docker build1
+        # Docker build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker ps
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        # trial
         
     - name: Building the sql and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: mysql
-        IMAGE_TAG: v0.1
+        ECR_REPOSITORY: my_db
+        IMAGE_TAG: v1.0
       run: |
-        cd sql/
+        cd mysql/
         ls -ltra
-        # Docker build
+        # Docker build1
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker ps
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
